@@ -1,7 +1,8 @@
-package com.example.kakao_search
+package com.example.kakao_search.presentation.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.kakao_search.R
 
 
 class MainActivity : AppCompatActivity() {
