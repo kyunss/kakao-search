@@ -21,7 +21,7 @@
         android:label="submitFragment"
         tools:layout="@layout/fragment_detail">
 
-        <actionㄴ
+        <action
             android:id="@+id/action_detailFragment_to_webFragment"
             app:destination="@id/webFragment" />
     </fragment>
