@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import java.time.LocalDateTime
 
 
-internal data class Cafe(
+internal data class BlogEntity(
     @SerializedName("total_count") val totalCount: Int,
     @SerializedName("pageable_count") val pageCount: Int,
     @SerializedName("is_end") val isEnd: Boolean,
@@ -15,8 +15,8 @@ internal data class Cafe(
         val title: String,
         val contents: String,
         val url: String,
-        @SerializedName("cafename") val cafeName: String,
+        @SerializedName("blogname") val blogName: String,
         val thumbnail: String,
-        @SerializedName("aatetime") val dateTime: LocalDateTime,
+        @SerializedName("datetime") val dateTime: LocalDateTime,
     )
 }
