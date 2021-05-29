@@ -28,7 +28,15 @@ internal class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.initialize()
+        initializeListener()
+    }
+
+    private fun initializeListener() {
+        binding.bSearch.setOnClickListener {
+            val query = binding.etQuery.text.toString()
+
+            viewModel.loadSearchResult(query)
+        }
     }
 
 

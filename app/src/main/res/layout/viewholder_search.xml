@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="searchItem"
+            type="com.example.kakao_search.presentation.search.list.SearchItem" />
+
+        <variable
+            name="listener"
+            type="com.example.kakao_search.presentation.search.list.SearchItemListener" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{() ->listener.onItemClicked(searchItem)}">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_type"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@{searchItem.typeImage}"
+                app:layout_constraintEnd_toStartOf="@id/tv_search_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_search_name"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:text="@{searchItem.name}"
+                app:layout_constraintEnd_toStartOf="@id/iv_search_thumbnail"
+                app:layout_constraintStart_toEndOf="@id/iv_type"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_search_title"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="@{searchItem.title}"
+                android:maxLines="2"
+                app:layout_constraintBottom_toTopOf="@id/tv_search_date"
+                app:layout_constraintEnd_toStartOf="@+id/iv_search_thumbnail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_type" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_search_thumbnail"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                app:image="@{searchItem.thumbnail}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_search_date"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:text="@{searchItem.dateTime}"
+                app:layout_constraintBottom_toBottomOf="@id/iv_search_thumbnail"
+                app:layout_constraintEnd_toStartOf="@id/iv_search_thumbnail"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

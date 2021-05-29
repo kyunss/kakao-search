@@ -1,5 +1,6 @@
 package com.example.kakao_search.data.entity
 
+import com.example.kakao_search.domain.search.Document
 import com.example.kakao_search.domain.search.Search
 import com.google.gson.annotations.SerializedName
 import java.time.LocalDateTime
@@ -28,7 +29,7 @@ fun BlogEntity.toSearch(): Search {
         pageCount = this.pageCount,
         isEnd = this.isEnd,
         documents = this.documents.map {
-            Search.Document(
+            Document(
                 title = it.title,
                 contents = it.contents,
                 url = it.url,

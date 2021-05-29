@@ -24,13 +24,7 @@ internal class GetBlog @Inject constructor(
         val sort: String,
         val page: Int,
         val size: Int,
-        val filter: SearchFilter
-    ) {
-        sealed class SearchFilter {
-            object All: SearchFilter()
-            object Blog: SearchFilter()
-            object Cafe: SearchFilter()
-        }
-    }
+        val filter: Filter
+    )
 
 }
