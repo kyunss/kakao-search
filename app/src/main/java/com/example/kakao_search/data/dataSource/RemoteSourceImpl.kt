@@ -1,8 +1,11 @@
 package com.example.kakao_search.data.dataSource
 
+import com.example.kakao_search.data.entity.BlogEntity
+import com.example.kakao_search.data.entity.CafeEntity
 import com.example.kakao_search.data.entity.toSearch
 import com.example.kakao_search.data.network.KakaoApiService
 import com.example.kakao_search.domain.search.Search
+import com.example.kakao_search.domain.useCase.UseCase
 import com.example.kakao_search.exception.Failure
 import com.example.kakao_search.functional.Either
 import retrofit2.Call
@@ -13,19 +16,19 @@ internal class RemoteSourceImpl @Inject constructor(
     private val kakaoApiService: KakaoApiService
 ): RemoteSource {
 
-    override fun fetchBlogSearch(query: String, sort: String, page: Int, size: Int): Either<Failure, List<Search>> {
+    override fun fetchBlogSearch(query: String, sort: String, page: Int, size: Int): Either<Failure, Search> {
         return request(
             call = kakaoApiService.fetchBlogSearch(query),
-            transform = { blogEntityList -> blogEntityList.map { it.toSearch() } },
-            emptyList()
+            transform = { blogEntity -> blogEntity.toSearch() },
+            BlogEntity.empty()
         )
     }
 
-    override fun fetchCafeSearch(query: String, sort: String, page: Int, size: Int): Either<Failure, List<Search>> {
+    override fun fetchCafeSearch(query: String, sort: String, page: Int, size: Int): Either<Failure, Search> {
         return request(
             call = kakaoApiService.fetchCafeSearch(query),
-            transform = { cafeEntityList -> cafeEntityList.map { it.toSearch() } },
-            emptyList()
+            transform = { cafeEntity -> cafeEntity.toSearch() },
+            CafeEntity.empty()
         )
     }
 
@@ -36,6 +39,7 @@ internal class RemoteSourceImpl @Inject constructor(
     ): Either<Failure, R> {
         return try {
             val response = call.execute()
+
             when (response.isSuccessful) {
                 true -> Either.Right(transform((response.body() ?: default)))
                 false -> Either.Left(Failure.ServerError)

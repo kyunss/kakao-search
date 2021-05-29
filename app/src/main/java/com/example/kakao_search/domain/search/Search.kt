@@ -1,5 +1,6 @@
 package com.example.kakao_search.domain.search
 
+import android.net.Uri
 import java.time.LocalDateTime
 
 
@@ -9,7 +10,6 @@ data class Search(
     val pageCount: Int,
     val isEnd: Boolean,
     val documents: List<Document>,
-    val filter: Filter
 )
 
 data class Document(
@@ -17,19 +17,13 @@ data class Document(
     val contents: String,
     val url: String,
     val name: String,
-    val thumbnail: String,
+    val thumbnail: Uri,
     val dateTime: LocalDateTime,
 )
 
 sealed class Type {
     object Blog : Type()
     object Cafe : Type()
-}
-
-sealed class Filter {
-    object All : Filter()
-    object Blog : Filter()
-    object Cafe : Filter()
 }
 
 sealed class Sort {

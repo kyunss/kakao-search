@@ -11,12 +11,12 @@ internal interface SearchRepository {
         sort: String,
         page: Int,
         size: Int = 25,
-    ): Either<Failure, List<Search>>
+    ): Either<Failure, Search>
 
     fun fetchCafeSearch(
         query: String,
         sort: String,
         page: Int,
         size: Int = 25,
-    ): Either<Failure, List<Search>>
+    ): Either<Failure, Search>
 }

@@ -9,9 +9,9 @@ import javax.inject.Inject
 
 internal class GetCafe @Inject constructor(
     private val searchRepository: SearchRepository
-): UseCase<List<Search>, GetCafe.Params>() {
+): UseCase<Search, GetCafe.Params>() {
 
-    override suspend fun execute(params: Params): Either<Failure, List<Search>> {
+    override suspend fun execute(params: Params): Either<Failure, Search> {
         return searchRepository.fetchCafeSearch(
             query = params.query,
             sort = params.sort,
@@ -24,7 +24,7 @@ internal class GetCafe @Inject constructor(
         val sort: String,
         val page: Int,
         val size: Int,
-        val filter: Search.Filter
+        val type: Type
     )
 
 }

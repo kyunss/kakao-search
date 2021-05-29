@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.kakao_search.databinding.FragmentSearchBinding
+import com.example.kakao_search.presentation.search.list.SearchAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -16,6 +17,8 @@ internal class SearchFragment : Fragment() {
     private val viewModel by viewModels<SearchViewModel>()
 
     private lateinit var binding: FragmentSearchBinding
+
+    private val searchAdapter = SearchAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
@@ -28,7 +31,15 @@ internal class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initializeView()
         initializeListener()
+        observeViewModel()
+    }
+
+    private fun initializeView() {
+        searchAdapter.clickListener = { searchItem ->
+
+        }
     }
 
     private fun initializeListener() {
@@ -36,6 +47,14 @@ internal class SearchFragment : Fragment() {
             val query = binding.etQuery.text.toString()
 
             viewModel.loadSearchResult(query)
+        }
+    }
+
+    private fun observeViewModel() {
+        with(viewModel) {
+            searchResult.observe(viewLifecycleOwner, { searchItemList ->
+                searchAdapter.setSearchResultList(searchItemList)
+            })
         }
     }
 

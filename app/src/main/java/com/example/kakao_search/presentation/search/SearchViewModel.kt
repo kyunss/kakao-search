@@ -1,5 +1,6 @@
 package com.example.kakao_search.presentation.search
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,14 +30,14 @@ internal class SearchViewModel @Inject constructor(
         get() = _searchResult
     private val _searchResult = MutableLiveData<List<SearchItem>>()
 
-    fun loadSearchResult(query: String, sort: Sort = Sort.Title, filter: Filter = Filter.All) {
+    fun loadSearchResult(query: String, sort: Sort = Sort.Title, type: Type = Type.Blog) {
         getBlog(
             params = GetBlog.Params(
                 query = query,
                 sort = sort.toString(),
                 page = page++,
                 size = size,
-                filter = filter
+                type = type
             ),
             scope = viewModelScope,
             onResult = { result: Either<Failure, Search> ->
@@ -46,7 +47,7 @@ internal class SearchViewModel @Inject constructor(
     }
 
     private fun handleFailure(failure: Failure) {
-
+        Log.e("SearchViewModel", "$failure")
     }
 
     private fun handleSearchResult(searchResult: Search) {
@@ -59,10 +60,9 @@ internal class SearchViewModel @Inject constructor(
                 name = document.name,
                 title = document.title,
                 dateTime = document.dateTime.toString(),
-                thumbnail = document.thumbnail.toString()
+                thumbnail = document.thumbnail
             )
         }
-
     }
 
 }

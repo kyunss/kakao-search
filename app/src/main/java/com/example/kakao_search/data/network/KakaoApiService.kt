@@ -15,10 +15,10 @@ internal interface KakaoApiService {
 
     @Headers(HEADERS)
     @GET("/v2/search/cafe")
-    fun fetchCafeSearch(@Query("query") query: String): Call<List<CafeEntity>>
+    fun fetchCafeSearch(@Query("query") query: String): Call<CafeEntity>
 
     @Headers(HEADERS)
     @GET("/v2/search/blog")
-    fun fetchBlogSearch(@Query("query") query: String): Call<List<BlogEntity>>
+    fun fetchBlogSearch(@Query("query") query: String): Call<BlogEntity>
 
 }

@@ -6,17 +6,11 @@
         <variable
             name="searchItem"
             type="com.example.kakao_search.presentation.search.list.SearchItem" />
-
-        <variable
-            name="listener"
-            type="com.example.kakao_search.presentation.search.list.SearchItemListener" />
-
     </data>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="@{() ->listener.onItemClicked(searchItem)}">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

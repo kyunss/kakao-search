@@ -9,9 +9,9 @@ import javax.inject.Inject
 
 internal class GetBlog @Inject constructor(
     private val searchRepository: SearchRepository
-): UseCase<List<Search>, GetBlog.Params>() {
+): UseCase<Search, GetBlog.Params>() {
 
-    override suspend fun execute(params: Params): Either<Failure, List<Search>> {
+    override suspend fun execute(params: Params): Either<Failure, Search> {
         return searchRepository.fetchBlogSearch(
             query = params.query,
             sort = params.sort,
@@ -24,7 +24,7 @@ internal class GetBlog @Inject constructor(
         val sort: String,
         val page: Int,
         val size: Int,
-        val filter: Filter
+        val type: Type
     )
 
 }

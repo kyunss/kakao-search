@@ -4,16 +4,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 
-internal class SearchAdapter(private val listener: SearchItemListener) : RecyclerView.Adapter<SearchViewHolder>() {
+internal class SearchAdapter : RecyclerView.Adapter<SearchViewHolder>() {
 
     private var searchResultList = listOf<SearchItem>()
+
+    internal var clickListener: (SearchItem) -> Unit = { _ -> }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         return SearchViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        holder.bind(searchResultList[position], listener)
+        holder.bind(searchResultList[position], clickListener)
     }
 
     override fun getItemCount() = searchResultList.size
@@ -24,8 +26,4 @@ internal class SearchAdapter(private val listener: SearchItemListener) : Recycle
         notifyDataSetChanged()
     }
 
-}
-
-internal class SearchItemListener(val listener: (SearchItem) -> Unit) {
-    fun onItemClicked(searchItem: SearchItem) = listener(searchItem)
 }
