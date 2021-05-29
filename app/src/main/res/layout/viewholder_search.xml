@@ -27,33 +27,33 @@
                 app:layout_constraintEnd_toStartOf="@id/tv_search_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:background="@drawable/ic_round_format_bold_24"/>
+                tools:background="@drawable/ic_round_format_bold_24" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_search_name"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
-                android:text="@{searchItem.name}"
+                android:paddingStart="5dp"
                 android:gravity="center_vertical"
-                android:layout_marginStart="10dp"
+                android:text="@{searchItem.name}"
                 app:layout_constraintEnd_toStartOf="@id/iv_search_thumbnail"
                 app:layout_constraintStart_toEndOf="@id/iv_type"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="이름이름이름이름이름"/>
+                tools:text="이름이름이름이름이름" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_search_title"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:maxLines="2"
-                android:text="@{searchItem.title}"
                 android:ellipsize="end"
+                android:maxLines="2"
                 android:padding="10dp"
+                app:htmlText="@{searchItem.title}"
                 app:layout_constraintBottom_toTopOf="@id/tv_search_date"
                 app:layout_constraintEnd_toStartOf="@+id/iv_search_thumbnail"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_search_name"
-                tools:text="컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠"/>
+                tools:text="컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_search_thumbnail"
@@ -67,13 +67,13 @@
                 android:id="@+id/tv_search_date"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
-                android:text="@{searchItem.dateTime}"
                 android:gravity="center_vertical"
                 android:paddingStart="10dp"
+                app:dateFormat="@{searchItem.dateTime}"
                 app:layout_constraintBottom_toBottomOf="@id/iv_search_thumbnail"
                 app:layout_constraintEnd_toStartOf="@id/iv_search_thumbnail"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:text="2021.05.31"/>
+                tools:text="2021.05.31" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

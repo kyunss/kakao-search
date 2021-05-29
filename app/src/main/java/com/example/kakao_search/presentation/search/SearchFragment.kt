@@ -1,9 +1,11 @@
 package com.example.kakao_search.presentation.search
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -49,6 +51,8 @@ internal class SearchFragment : Fragment() {
 
     private fun initializeListener() {
         binding.bSearch.setOnClickListener {
+            hideKeyboard()
+
             val query = binding.etQuery.text.toString()
 
             viewModel.loadSearchResult(query)
@@ -67,6 +71,10 @@ internal class SearchFragment : Fragment() {
                 binding.tvNoSearch.isVisible = noResult
             })
         }
+    }
+
+    private fun hideKeyboard() {
+        (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(binding.etQuery.windowToken, 0)
     }
 
 
