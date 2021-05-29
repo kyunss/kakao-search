@@ -73,7 +73,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/iv_search_thumbnail"
                 app:layout_constraintEnd_toStartOf="@id/iv_search_thumbnail"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:text="2021.05.31" />
+                tools:text="2021년 05월 31일" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
