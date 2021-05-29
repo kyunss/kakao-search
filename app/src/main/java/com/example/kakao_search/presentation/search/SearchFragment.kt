@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kakao_search.databinding.FragmentSearchBinding
 import com.example.kakao_search.presentation.search.list.SearchAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,6 +38,9 @@ internal class SearchFragment : Fragment() {
     }
 
     private fun initializeView() {
+        binding.rvSearchResult.adapter = searchAdapter
+        binding.rvSearchResult.layoutManager = LinearLayoutManager(context)
+
         searchAdapter.clickListener = { searchItem ->
 
         }
