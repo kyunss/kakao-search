@@ -3,7 +3,7 @@ package com.example.kakao_search.domain.search
 import java.time.LocalDateTime
 
 
-internal data class Search(
+data class Search(
     val totalCount: Int,
     val pageCount: Int,
     val isEnd: Boolean,

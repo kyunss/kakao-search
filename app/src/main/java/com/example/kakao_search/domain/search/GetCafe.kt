@@ -7,13 +7,12 @@ import com.example.kakao_search.functional.Either
 import javax.inject.Inject
 
 
-internal class GetSearch @Inject constructor(
+internal class GetCafe @Inject constructor(
     private val searchRepository: SearchRepository
-): UseCase<List<Search>, GetSearch.Params>() {
+): UseCase<List<Search>, GetCafe.Params>() {
 
-    // FixMe: SearchRepository 에서 filter 까지 입력받아 메서드를 하나로 통합할까 고민
     override suspend fun execute(params: Params): Either<Failure, List<Search>> {
-        return searchRepository.fetchSearchResult(
+        return searchRepository.fetchCafeSearch(
             query = params.query,
             sort = params.sort,
             page = params.page
