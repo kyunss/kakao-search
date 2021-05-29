@@ -6,9 +6,11 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.kakao_search.R
 import com.example.kakao_search.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 
-class MainActivity : AppCompatActivity() {
+@AndroidEntryPoint
+internal class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
 
@@ -25,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initialize() {
-        val host: NavHostFragment = supportFragmentManager.findFragmentById(R.id.container_fragment) as NavHostFragment? ?: return
+        val host: NavHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment? ?: return
 
         navController = host.navController
     }
