@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -58,6 +59,12 @@ internal class SearchFragment : Fragment() {
         with(viewModel) {
             searchResult.observe(viewLifecycleOwner, { searchItemList ->
                 searchAdapter.setSearchResultList(searchItemList)
+            })
+
+            noSearchResult.observe(viewLifecycleOwner, { noResult ->
+                binding.rvSearchResult.isVisible = !noResult
+
+                binding.tvNoSearch.isVisible = noResult
             })
         }
     }

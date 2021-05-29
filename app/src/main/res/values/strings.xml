@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">kakao-search</string>
     <string name="filter_all">All</string>
+    <string name="no_search_result">검색 결과가 없습니다.</string>
 </resources>

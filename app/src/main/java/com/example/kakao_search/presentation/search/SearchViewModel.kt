@@ -31,6 +31,10 @@ internal class SearchViewModel @Inject constructor(
         get() = _searchResult
     private val _searchResult = MutableLiveData<List<SearchItem>>()
 
+    val noSearchResult: LiveData<Boolean>
+        get() = _noSearchResult
+    private val _noSearchResult = MutableLiveData(false)
+
     fun loadSearchResult(query: String, sort: Sort = Sort.Title, type: Type = Type.Blog) {
         getBlog(
             params = GetBlog.Params(
@@ -64,6 +68,8 @@ internal class SearchViewModel @Inject constructor(
                 thumbnail = document.thumbnail
             )
         }
+
+        _noSearchResult.value = searchResult.documents.isEmpty()
     }
 
 }
