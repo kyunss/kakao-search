@@ -21,7 +21,7 @@ internal class SearchFragment : Fragment() {
 
     private val searchAdapter = SearchAdapter()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
 
         binding.viewModel = viewModel

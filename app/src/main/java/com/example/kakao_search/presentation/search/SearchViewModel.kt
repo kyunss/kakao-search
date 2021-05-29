@@ -13,6 +13,7 @@ import com.example.kakao_search.exception.Failure
 import com.example.kakao_search.functional.Either
 import com.example.kakao_search.presentation.search.list.SearchItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 
@@ -54,12 +55,12 @@ internal class SearchViewModel @Inject constructor(
         _searchResult.value = searchResult.documents.map { document ->
             SearchItem(
                 typeImage = when (searchResult.type) {
-                    is Type.Blog -> R.drawable.ic_launcher_background
-                    is Type.Cafe -> R.drawable.ic_launcher_background
+                    is Type.Blog -> R.drawable.ic_round_format_bold_24
+                    is Type.Cafe -> R.drawable.ic_baseline_local_cafe_24
                 },
                 name = document.name,
                 title = document.title,
-                dateTime = document.dateTime.toString(),
+                dateTime = document.dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE),
                 thumbnail = document.thumbnail
             )
         }
