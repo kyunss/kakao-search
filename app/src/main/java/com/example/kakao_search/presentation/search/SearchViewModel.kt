@@ -20,7 +20,7 @@ internal class SearchViewModel @Inject constructor(
     private val getSearch: GetSearch
 ) : ViewModel() {
 
-    private var page = 0
+    private var page = 1
 
     val searchResult: LiveData<List<SearchItem>>
         get() = _searchResult

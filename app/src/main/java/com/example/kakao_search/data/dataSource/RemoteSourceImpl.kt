@@ -18,7 +18,7 @@ internal class RemoteSourceImpl @Inject constructor(
 
     override fun fetchBlogSearch(query: String, page: Int): Either<Failure, Search> {
         return request(
-            call = kakaoApiService.fetchBlogSearch(query, page),
+            call = kakaoApiService.fetchBlogSearch(query = query, page = page),
             transform = { blogEntity -> blogEntity.toSearch() },
             BlogEntity.empty()
         )
@@ -26,8 +26,8 @@ internal class RemoteSourceImpl @Inject constructor(
 
     override fun fetchCafeSearch(query: String, page: Int): Either<Failure, Search> {
         return request(
-            call = kakaoApiService.fetchCafeSearch(query, page),
-            transform = { blogEntity -> blogEntity.toSearch() },
+            call = kakaoApiService.fetchCafeSearch(query = query, page = page),
+            transform = { cafeEntity -> cafeEntity.toSearch() },
             CafeEntity.empty()
         )
     }

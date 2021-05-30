@@ -15,11 +15,11 @@ internal interface KakaoApiService {
     }
 
     @Headers(HEADERS)
-    @GET("/v2/search/cafe")
-    fun fetchCafeSearch(@Query("query") query: String, page: Int, size: Int = PAGING_SIZE): Call<CafeEntity>
+    @GET("/v2/search/blog")
+    fun fetchBlogSearch(@Query("query") query: String, @Query("page")page: Int, @Query("size")size: Int = PAGING_SIZE): Call<BlogEntity>
 
     @Headers(HEADERS)
-    @GET("/v2/search/blog")
-    fun fetchBlogSearch(@Query("query") query: String, page: Int, size: Int = PAGING_SIZE): Call<BlogEntity>
+    @GET("/v2/search/cafe")
+    fun fetchCafeSearch(@Query("query") query: String, @Query("page")page: Int, @Query("size")size: Int = PAGING_SIZE): Call<CafeEntity>
 
 }

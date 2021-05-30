@@ -19,7 +19,7 @@ internal class SearchRepositoryImpl @Inject constructor(
     }
 
     override fun fetchCafeSearch(query: String, page: Int): Either<Failure, Search> {
-        return remoteSource.fetchBlogSearch(
+        return remoteSource.fetchCafeSearch(
             query = query,
             page = page,
         )

@@ -1,6 +1,5 @@
 package com.example.kakao_search.domain.search
 
-import com.example.kakao_search.data.dataSource.SearchPagingSource
 import com.example.kakao_search.domain.repository.search.SearchRepository
 import com.example.kakao_search.domain.useCase.UseCase
 import com.example.kakao_search.exception.Failure
@@ -11,26 +10,25 @@ import javax.inject.Inject
 
 internal class GetSearch @Inject constructor(
     private val searchRepository: SearchRepository,
-    private val searchPagingSource: SearchPagingSource
-): UseCase<Search, GetSearch.Params>() {
+) : UseCase<Search, GetSearch.Params>() {
 
     override suspend fun execute(params: Params): Either<Failure, Search> {
         return when (params.filter) {
             Filter.All -> {
-                val blogResult = searchRepository.fetchBlogSearch(
+                val blogResponse = searchRepository.fetchBlogSearch(
                     query = params.query,
                     page = params.page
                 )
 
-                val cafeResult = searchRepository.fetchCafeSearch(
+                val cafeResponse = searchRepository.fetchCafeSearch(
                     query = params.query,
                     page = params.page
                 )
 
-                return if (blogResult.isRight && cafeResult.isRight) {
+                return if (blogResponse.isRight && cafeResponse.isRight) {
                     //FixMe
-                    val blogSearch = blogResult.getOrElse(Failure.ServerError) as Search
-                    val cafeSearch = cafeResult.getOrElse(Failure.ServerError) as Search
+                    val blogSearch = blogResponse.getOrElse(Failure.ServerError) as Search
+                    val cafeSearch = cafeResponse.getOrElse(Failure.ServerError) as Search
 
                     Either.Right(blogSearch + cafeSearch)
                 } else {
