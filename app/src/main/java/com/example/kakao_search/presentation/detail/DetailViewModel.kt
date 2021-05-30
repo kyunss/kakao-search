@@ -9,5 +9,5 @@ import javax.inject.Inject
 internal class DetailViewModel @Inject constructor(
 ) : ViewModel() {
 
-   
+
 }
