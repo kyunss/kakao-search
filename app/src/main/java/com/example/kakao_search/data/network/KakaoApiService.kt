@@ -11,14 +11,15 @@ import retrofit2.http.Query
 internal interface KakaoApiService {
     companion object {
         private const val HEADERS = "Content-ResultType: application/json"
+        private const val PAGING_SIZE = 30
     }
 
     @Headers(HEADERS)
     @GET("/v2/search/cafe")
-    fun fetchCafeSearch(@Query("query") query: String): Call<CafeEntity>
+    fun fetchCafeSearch(@Query("query") query: String, page: Int, size: Int = PAGING_SIZE): Call<CafeEntity>
 
     @Headers(HEADERS)
     @GET("/v2/search/blog")
-    fun fetchBlogSearch(@Query("query") query: String): Call<BlogEntity>
+    fun fetchBlogSearch(@Query("query") query: String, page: Int, size: Int = PAGING_SIZE): Call<BlogEntity>
 
 }

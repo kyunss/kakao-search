@@ -8,15 +8,11 @@ import com.example.kakao_search.functional.Either
 internal interface SearchRepository {
     fun fetchBlogSearch(
         query: String,
-        sort: String,
-        page: Int,
-        size: Int = 25,
+        page: Int
     ): Either<Failure, Search>
 
     fun fetchCafeSearch(
         query: String,
-        sort: String,
         page: Int,
-        size: Int = 25,
     ): Either<Failure, Search>
 }

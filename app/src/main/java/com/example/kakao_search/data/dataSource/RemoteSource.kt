@@ -6,6 +6,6 @@ import com.example.kakao_search.functional.Either
 
 
 internal interface RemoteSource {
-    fun fetchBlogSearch(query: String, sort: String, page: Int, size: Int): Either<Failure, Search>
-    fun fetchCafeSearch(query: String, sort: String, page: Int, size: Int): Either<Failure, Search>
+    fun fetchBlogSearch(query: String, page: Int,): Either<Failure, Search>
+    fun fetchCafeSearch(query: String, page: Int,): Either<Failure, Search>
 }

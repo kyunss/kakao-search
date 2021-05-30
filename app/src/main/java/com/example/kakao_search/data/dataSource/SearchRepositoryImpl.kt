@@ -11,21 +11,18 @@ internal class SearchRepositoryImpl @Inject constructor(
     private val remoteSource: RemoteSource
 ) : SearchRepository {
 
-    override fun fetchBlogSearch(query: String, sort: String, page: Int, size: Int): Either<Failure, Search> {
+    override fun fetchBlogSearch(query: String, page: Int): Either<Failure, Search> {
         return remoteSource.fetchBlogSearch(
             query = query,
-            sort = sort,
             page = page,
-            size = size,
         )
     }
 
-    override fun fetchCafeSearch(query: String, sort: String, page: Int, size: Int): Either<Failure, Search> {
-        return remoteSource.fetchCafeSearch(
+    override fun fetchCafeSearch(query: String, page: Int): Either<Failure, Search> {
+        return remoteSource.fetchBlogSearch(
             query = query,
-            sort = sort,
             page = page,
-            size = size,
         )
     }
+
 }

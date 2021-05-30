@@ -21,7 +21,6 @@ internal class SearchViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var page = 0
-    private val size = 25
 
     val searchResult: LiveData<List<SearchItem>>
         get() = _searchResult
@@ -31,13 +30,11 @@ internal class SearchViewModel @Inject constructor(
         get() = _noSearchResult
     private val _noSearchResult = MutableLiveData(false)
 
-    fun loadSearchResult(query: String, sort: Sort = Sort.Title, filter: Filter = Filter.All) {
+    fun loadSearchResult(query: String, filter: Filter = Filter.All) {
         getSearch(
             params = GetSearch.Params(
                 query = query,
-                sort = sort.toString(),
                 page = page++,
-                size = size,
                 filter = filter
             ),
             scope = viewModelScope,
