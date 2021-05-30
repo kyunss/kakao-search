@@ -28,6 +28,10 @@ internal class SearchViewModel @Inject constructor(
         get() = _searchResult
     private val _searchResult = MutableLiveData<List<SearchItem>>()
 
+    val clearSearchResult: LiveData<Boolean>
+        get() = _clearSearchResult
+    private val _clearSearchResult = MutableLiveData(false)
+
     val noSearchResult: LiveData<Boolean>
         get() = _noSearchResult
     private val _noSearchResult = MutableLiveData(false)
@@ -35,6 +39,8 @@ internal class SearchViewModel @Inject constructor(
     fun loadSearchResult(query: String, filter: Filter = Filter.Type.Blog) {
         this.lastQuery = query
         this.lastFilter = filter
+
+        _clearSearchResult.value = true
 
         getSearch(
             params = GetSearch.Params(
@@ -53,7 +59,7 @@ internal class SearchViewModel @Inject constructor(
 
     }
 
-    fun onBottomReached(position: Int) {
+    fun loadMoreItems() {
         getSearch(
             params = GetSearch.Params(
                 query = this.lastQuery,
@@ -65,6 +71,7 @@ internal class SearchViewModel @Inject constructor(
                 result.fold(::handleFailure, ::handleSearchResult)
             }
         )
+
     }
 
     private fun handleFailure(failure: Failure) {
@@ -72,6 +79,8 @@ internal class SearchViewModel @Inject constructor(
     }
 
     private fun handleSearchResult(searchResult: Search) {
+        Log.e("SearchViewModel", "searchResultSize: ${searchResult.documents.size}, pageNumber : ${this.page}")
+
         _searchResult.value = searchResult.documents.map { document ->
             SearchItem(
                 typeImage = when (document.type) {

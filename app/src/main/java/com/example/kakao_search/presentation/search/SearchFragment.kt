@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kakao_search.databinding.FragmentSearchBinding
+import com.example.kakao_search.presentation.search.list.PagingListener
 import com.example.kakao_search.presentation.search.list.SearchAdapter
 import com.example.kakao_search.presentation.search.list.SearchItem
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,18 +46,6 @@ internal class SearchFragment : Fragment() {
     private fun initializeView() {
         binding.rvSearchResult.adapter = searchAdapter
         binding.rvSearchResult.layoutManager = LinearLayoutManager(context)
-
-        searchAdapter.setListener(object : SearchAdapter.Listener {
-            override fun onItemClicked(searchItem: SearchItem) {
-                viewModel.onSearchItemClicked(searchItem)
-            }
-
-            override fun onBottomReached(position: Int) {
-                Log.d("TAG", "onBottomReached - $position")
-
-                viewModel.onBottomReached(position)
-            }
-        })
     }
 
     private fun initializeListener() {
@@ -67,12 +56,26 @@ internal class SearchFragment : Fragment() {
 
             viewModel.loadSearchResult(query)
         }
+
+        binding.rvSearchResult.addOnScrollListener(object : PagingListener(binding.rvSearchResult.layoutManager as LinearLayoutManager) {
+            override fun loadMoreItems() {
+                viewModel.loadMoreItems()
+            }
+        })
+
+        searchAdapter.clickListener = { searchItem ->
+            viewModel.onSearchItemClicked(searchItem)
+        }
     }
 
     private fun observeViewModel() {
         with(viewModel) {
             searchResult.observe(viewLifecycleOwner, { searchItemList ->
-                searchAdapter.setSearchResultList(searchItemList)
+                searchAdapter.addSearchResult(searchItemList)
+            })
+
+            clearSearchResult.observe(viewLifecycleOwner, {
+                searchAdapter.clear()
             })
 
             noSearchResult.observe(viewLifecycleOwner, { noResult ->
@@ -86,6 +89,5 @@ internal class SearchFragment : Fragment() {
     private fun hideKeyboard() {
         (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(binding.etQuery.windowToken, 0)
     }
-
 
 }
