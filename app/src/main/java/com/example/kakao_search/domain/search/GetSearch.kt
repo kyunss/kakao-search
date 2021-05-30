@@ -45,6 +45,7 @@ internal class GetSearch @Inject constructor(
                     page = params.page
                 )
             }
+
             Filter.Type.Cafe -> {
                 searchRepository.fetchCafeSearch(
                     query = params.query,
