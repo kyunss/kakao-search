@@ -1,4 +1,4 @@
-package com.example.kakao_search.domain.repository.search
+package com.example.kakao_search.domain.repository
 
 import com.example.kakao_search.domain.search.Search
 import com.example.kakao_search.exception.Failure

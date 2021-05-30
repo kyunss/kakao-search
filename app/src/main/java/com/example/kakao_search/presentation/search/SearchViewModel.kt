@@ -42,6 +42,18 @@ internal class SearchViewModel @Inject constructor(
 
         _clearSearchResult.value = true
 
+        executeGetSearch(query, this.page, filter)
+    }
+
+    fun onSearchItemClicked(searchItem: SearchItem) {
+
+    }
+
+    fun loadMoreItems() {
+        executeGetSearch(this.lastQuery, ++page, this.lastFilter)
+    }
+
+    private fun executeGetSearch(query: String, page: Int, filter: Filter) {
         getSearch(
             params = GetSearch.Params(
                 query = query,
@@ -55,31 +67,11 @@ internal class SearchViewModel @Inject constructor(
         )
     }
 
-    fun onSearchItemClicked(searchItem: SearchItem) {
-
-    }
-
-    fun loadMoreItems() {
-        getSearch(
-            params = GetSearch.Params(
-                query = this.lastQuery,
-                page = ++page,
-                filter = this.lastFilter
-            ),
-            scope = viewModelScope,
-            onResult = { result: Either<Failure, Search> ->
-                result.fold(::handleFailure, ::handleSearchResult)
-            }
-        )
-    }
-
     private fun handleFailure(failure: Failure) {
         Log.e("SearchViewModel", "$failure")
     }
 
     private fun handleSearchResult(searchResult: Search) {
-        Log.e("SearchViewModel", "searchResultSize: ${searchResult.documents.size}, pageNumber : ${this.page}")
-
         _searchResult.value = searchResult.documents.map { document ->
             SearchItem(
                 typeImage = when (document.type) {

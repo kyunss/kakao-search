@@ -1,6 +1,6 @@
 package com.example.kakao_search.data.dataSource
 
-import com.example.kakao_search.domain.repository.search.SearchRepository
+import com.example.kakao_search.domain.repository.SearchRepository
 import com.example.kakao_search.domain.search.Search
 import com.example.kakao_search.exception.Failure
 import com.example.kakao_search.functional.Either

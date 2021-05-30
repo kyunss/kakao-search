@@ -14,7 +14,7 @@ data class Search(
         return Search(
             totalCount = this.totalCount + other.totalCount,
             pageCount = this.pageCount + other.pageCount,
-            isEnd = false, // FixMe
+            isEnd = this.isEnd || other.isEnd,
             documents = this.documents + other.documents
         )
     }
@@ -22,12 +22,12 @@ data class Search(
 
 data class Document(
     val type: Filter.Type,
+    val thumbnail: Uri,
+    val name: String,
     val title: String,
     val contents: String,
-    val url: String,
-    val name: String,
-    val thumbnail: Uri,
     val dateTime: LocalDateTime,
+    val url: String,
 )
 
 sealed class Filter {
