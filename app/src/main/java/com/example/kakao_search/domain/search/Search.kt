@@ -5,14 +5,23 @@ import java.time.LocalDateTime
 
 
 data class Search(
-    val type: Type,
     val totalCount: Int,
     val pageCount: Int,
     val isEnd: Boolean,
     val documents: List<Document>,
-)
+) {
+    operator fun plus(other: Search): Search {
+        return Search(
+            totalCount = this.totalCount + other.totalCount,
+            pageCount = this.pageCount + other.pageCount,
+            isEnd = false, // FixMe
+            documents = this.documents + other.documents
+        )
+    }
+}
 
 data class Document(
+    val type: Filter.Type,
     val title: String,
     val contents: String,
     val url: String,
@@ -21,9 +30,13 @@ data class Document(
     val dateTime: LocalDateTime,
 )
 
-sealed class Type {
-    object Blog : Type()
-    object Cafe : Type()
+sealed class Filter {
+    object All : Filter()
+
+    sealed class Type : Filter() {
+        object Blog : Type()
+        object Cafe : Type()
+    }
 }
 
 sealed class Sort {

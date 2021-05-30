@@ -23,8 +23,7 @@ internal class GetCafe @Inject constructor(
         val query: String,
         val sort: String,
         val page: Int,
-        val size: Int,
-        val type: Type
+        val size: Int
     )
 
 }

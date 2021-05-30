@@ -1,6 +1,5 @@
 package com.example.kakao_search.support
 
-import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Build
 import android.text.Html
@@ -9,14 +8,8 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.example.kakao_search.R
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.time.Instant
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.time.temporal.TemporalField
-import java.util.*
 
 
 @BindingAdapter("image")
@@ -47,9 +40,9 @@ fun bindDateFormat(textView: AppCompatTextView, dateText: String) {
 
         localDate.isEqual(yesterday) -> textView.context.getString(R.string.yesterday)
 
-       else -> {
-           val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
-           localDate.format(formatter)
+        else -> {
+            val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
+            localDate.format(formatter)
         }
     }
 }

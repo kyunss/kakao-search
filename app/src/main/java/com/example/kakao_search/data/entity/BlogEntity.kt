@@ -1,10 +1,7 @@
 package com.example.kakao_search.data.entity
 
 import android.net.Uri
-import com.example.kakao_search.domain.search.Document
-import com.example.kakao_search.domain.search.Search
-import com.example.kakao_search.domain.search.Sort
-import com.example.kakao_search.domain.search.Type
+import com.example.kakao_search.domain.search.*
 import com.google.gson.annotations.SerializedName
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -43,9 +40,9 @@ fun BlogEntity.toSearch(): Search {
         totalCount = this.totalCount,
         pageCount = this.pageCount,
         isEnd = this.isEnd,
-        type = Type.Blog,
         documents = this.documents.map {
             Document(
+                type = Filter.Type.Blog,
                 title = it.title,
                 contents = it.contents,
                 url = it.url,

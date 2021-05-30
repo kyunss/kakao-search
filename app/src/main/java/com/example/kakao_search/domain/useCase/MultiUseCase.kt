@@ -5,7 +5,7 @@ import com.example.kakao_search.functional.Either
 import kotlinx.coroutines.*
 
 
-internal abstract class UseCase<out Result, in Params> {
+internal abstract class MultiUseCase<out Result, in Params> {
 
     abstract suspend fun execute(params: Params): Either<Failure, Result>
 

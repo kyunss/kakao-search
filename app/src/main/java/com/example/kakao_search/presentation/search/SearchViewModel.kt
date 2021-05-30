@@ -20,8 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 internal class SearchViewModel @Inject constructor(
     private val getBlog: GetBlog,
-    private val getCafe: GetCafe
-
+    private val getCafe: GetCafe,
+    private val getAll: GetAll
 ) : ViewModel() {
 
     private var page = 0
@@ -35,20 +35,47 @@ internal class SearchViewModel @Inject constructor(
         get() = _noSearchResult
     private val _noSearchResult = MutableLiveData(false)
 
-    fun loadSearchResult(query: String, sort: Sort = Sort.Title, type: Type = Type.Blog) {
-        getBlog(
-            params = GetBlog.Params(
-                query = query,
-                sort = sort.toString(),
-                page = page++,
-                size = size,
-                type = type
-            ),
-            scope = viewModelScope,
-            onResult = { result: Either<Failure, Search> ->
-                result.fold(::handleFailure, ::handleSearchResult)
-            }
-        )
+    fun loadSearchResult(query: String, sort: Sort = Sort.Title, filter: Filter = Filter.All) {
+        when (filter) {
+            is Filter.All -> getAll(
+                params = GetAll.Params(
+                    query = query,
+                    sort = sort.toString(),
+                    page = page++,
+                    size = size
+                ),
+                scope = viewModelScope,
+                onResult = { result: Either<Failure, Search> ->
+                    result.fold(::handleFailure, ::handleSearchResult)
+                }
+            )
+
+            is Filter.Type.Blog -> getBlog(
+                params = GetBlog.Params(
+                    query = query,
+                    sort = sort.toString(),
+                    page = page++,
+                    size = size
+                ),
+                scope = viewModelScope,
+                onResult = { result: Either<Failure, Search> ->
+                    result.fold(::handleFailure, ::handleSearchResult)
+                }
+            )
+
+            is Filter.Type.Cafe -> getCafe(
+                params = GetCafe.Params(
+                    query = query,
+                    sort = sort.toString(),
+                    page = page++,
+                    size = size
+                ),
+                scope = viewModelScope,
+                onResult = { result: Either<Failure, Search> ->
+                    result.fold(::handleFailure, ::handleSearchResult)
+                }
+            )
+        }
     }
 
     private fun handleFailure(failure: Failure) {
@@ -58,9 +85,9 @@ internal class SearchViewModel @Inject constructor(
     private fun handleSearchResult(searchResult: Search) {
         _searchResult.value = searchResult.documents.map { document ->
             SearchItem(
-                typeImage = when (searchResult.type) {
-                    is Type.Blog -> R.drawable.ic_round_format_bold_24
-                    is Type.Cafe -> R.drawable.ic_baseline_local_cafe_24
+                typeImage = when (document.type) {
+                    is Filter.Type.Blog -> R.drawable.ic_round_format_bold_24
+                    is Filter.Type.Cafe -> R.drawable.ic_baseline_local_cafe_24
                 },
                 name = document.name,
                 title = document.title,
