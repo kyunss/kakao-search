@@ -6,6 +6,6 @@ import javax.inject.Inject
 
 internal class SearchResultCache @Inject constructor() {
 
-    lateinit var searchResult: Search
+    var searchResult: Search = Search.empty()
 
 }

@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter
 
 
 @BindingAdapter("image")
-fun bindCircleImage(imageView: ImageView, image: Uri) {
+fun bindImage(imageView: ImageView, image: Uri) {
     Glide.with(imageView)
         .load(image)
         .error(R.drawable.ic_baseline_disabled_by_default_24)

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kakao_search.R
 import com.example.kakao_search.domain.search.*
+import com.example.kakao_search.domain.useCase.UseCase
 import com.example.kakao_search.exception.Failure
 import com.example.kakao_search.functional.Either
 import com.example.kakao_search.presentation.search.list.SearchItem
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class SearchViewModel @Inject constructor(
-    private val getSearch: GetSearch
+    private val getSearch: GetSearch,
+    private val saveSearch: SaveSearch
 ) : ViewModel() {
 
     private var page = 1
@@ -36,6 +38,10 @@ internal class SearchViewModel @Inject constructor(
         get() = _noSearchResult
     private val _noSearchResult = MutableLiveData(false)
 
+    val navigateToDetail: LiveData<Int>
+        get() = _navigateToDetail
+    private val _navigateToDetail = MutableLiveData<Int>()
+
     fun loadSearchResult(query: String, filter: Filter = Filter.All) {
         this.lastQuery = query
         this.lastFilter = filter
@@ -45,8 +51,8 @@ internal class SearchViewModel @Inject constructor(
         executeGetSearch(query, this.page, filter)
     }
 
-    fun onSearchItemClicked(searchItem: SearchItem) {
-
+    fun onSearchItemClicked(searchItem: SearchItem, position: Int) {
+        _navigateToDetail.value = position
     }
 
     fun loadMoreItems() {
@@ -67,11 +73,17 @@ internal class SearchViewModel @Inject constructor(
         )
     }
 
-    private fun handleFailure(failure: Failure) {
-        Log.e("SearchViewModel", "$failure")
-    }
-
     private fun handleSearchResult(searchResult: Search) {
+        saveSearch(
+            params = SaveSearch.Params(
+                search = searchResult
+            ),
+            scope = viewModelScope,
+            onResult = { result: Either<Failure, UseCase.None> ->
+                result.fold(::handleFailure, ::handleSaveSearch)
+            }
+        )
+
         _searchResult.value = searchResult.documents.map { document ->
             SearchItem(
                 typeImage = when (document.type) {
@@ -87,5 +99,11 @@ internal class SearchViewModel @Inject constructor(
 
         _noSearchResult.value = searchResult.documents.isEmpty()
     }
+
+    private fun handleFailure(failure: Failure) {
+        Log.e("SearchViewModel", "$failure")
+    }
+
+    private fun handleSaveSearch(none: UseCase.None) {}
 
 }

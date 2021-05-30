@@ -16,8 +16,8 @@ internal class SearchViewHolder(private val binding: ViewholderSearchBinding) : 
         }
     }
 
-    fun bind(searchItem: SearchItem, listener: (SearchItem) -> Unit) {
-        itemView.setOnClickListener { listener(searchItem) }
+    fun bind(searchItem: SearchItem, listener: (SearchItem, Int) -> Unit) {
+        itemView.setOnClickListener { listener(searchItem, layoutPosition) }
 
         binding.searchItem = searchItem
 

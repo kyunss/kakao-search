@@ -10,6 +10,7 @@
         android:name="com.example.kakao_search.presentation.search.SearchFragment"
         android:label="searchFragment"
         tools:layout="@layout/fragment_search">
+
         <action
             android:id="@+id/action_searchFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
@@ -20,6 +21,11 @@
         android:name="com.example.kakao_search.presentation.detail.DetailFragment"
         android:label="submitFragment"
         tools:layout="@layout/fragment_detail">
+
+        <argument
+            android:name="index"
+            android:defaultValue="-1"
+            app:argType="integer" />
 
         <action
             android:id="@+id/action_detailFragment_to_webFragment"

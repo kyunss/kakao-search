@@ -10,6 +10,17 @@ data class Search(
     val isEnd: Boolean,
     val documents: List<Document>,
 ) {
+    companion object {
+        fun empty(): Search {
+            return Search(
+                totalCount = 0,
+                pageCount = 0,
+                isEnd = false,
+                documents = listOf()
+            )
+        }
+    }
+
     operator fun plus(other: Search): Search {
         return Search(
             totalCount = this.totalCount + other.totalCount,

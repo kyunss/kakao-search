@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kakao_search.databinding.FragmentSearchBinding
 import com.example.kakao_search.presentation.search.list.PagingListener
@@ -60,8 +61,8 @@ internal class SearchFragment : Fragment() {
             }
         })
 
-        searchAdapter.clickListener = { searchItem ->
-            viewModel.onSearchItemClicked(searchItem)
+        searchAdapter.clickListener = { searchItem, position ->
+            viewModel.onSearchItemClicked(searchItem, position)
         }
     }
 
@@ -79,6 +80,12 @@ internal class SearchFragment : Fragment() {
                 binding.rvSearchResult.isVisible = !noResult
 
                 binding.tvNoSearch.isVisible = noResult
+            })
+
+            navigateToDetail.observe(viewLifecycleOwner, { position ->
+                val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(index = position)
+
+                findNavController().navigate(action)
             })
         }
     }

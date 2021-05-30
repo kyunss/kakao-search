@@ -1,6 +1,8 @@
 package com.example.kakao_search.data.dataSource
 
 import com.example.kakao_search.domain.detail.SearchDetail
+import com.example.kakao_search.domain.search.Search
+import com.example.kakao_search.domain.useCase.UseCase
 import com.example.kakao_search.exception.Failure
 import com.example.kakao_search.functional.Either
 import retrofit2.Call
@@ -12,7 +14,6 @@ internal class LocalSourceImpl @Inject constructor(
 ) : LocalSource {
 
     override fun fetchSearchDocument(index: Int): Either<Failure, SearchDetail> {
-
         return if (index < 0 || index > searchResultCache.searchResult.documents.size) {
             Either.Left(Failure.NotFoundInCache)
         } else {
@@ -30,6 +31,12 @@ internal class LocalSourceImpl @Inject constructor(
                 )
             )
         }
+    }
+
+    override fun saveSearchDocument(search: Search): Either<Failure, UseCase.None> {
+        searchResultCache.searchResult = searchResultCache.searchResult + search
+
+        return Either.Right(UseCase.None())
     }
 
 }
