@@ -15,6 +15,7 @@ import com.example.kakao_search.databinding.FragmentSearchBinding
 import com.example.kakao_search.presentation.search.list.PagingListener
 import com.example.kakao_search.presentation.search.list.SearchAdapter
 import com.example.kakao_search.presentation.search.list.SearchItem
+import com.example.kakao_search.support.extension.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -50,7 +51,7 @@ internal class SearchFragment : Fragment() {
 
     private fun initializeListener() {
         binding.bSearch.setOnClickListener {
-            hideKeyboard()
+            requireContext().hideKeyboard(binding.etQuery)
 
             val query = binding.etQuery.text.toString()
 
@@ -84,10 +85,6 @@ internal class SearchFragment : Fragment() {
                 binding.tvNoSearch.isVisible = noResult
             })
         }
-    }
-
-    private fun hideKeyboard() {
-        (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(binding.etQuery.windowToken, 0)
     }
 
 }
