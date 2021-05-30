@@ -11,7 +11,7 @@ import retrofit2.http.Query
 internal interface KakaoApiService {
     companion object {
         private const val HEADERS = "Content-ResultType: application/json"
-        private const val PAGING_SIZE = 10
+        private const val PAGING_SIZE = 25
     }
 
     @Headers(HEADERS)

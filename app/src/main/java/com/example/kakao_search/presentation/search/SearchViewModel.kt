@@ -36,7 +36,7 @@ internal class SearchViewModel @Inject constructor(
         get() = _noSearchResult
     private val _noSearchResult = MutableLiveData(false)
 
-    fun loadSearchResult(query: String, filter: Filter = Filter.Type.Blog) {
+    fun loadSearchResult(query: String, filter: Filter = Filter.All) {
         this.lastQuery = query
         this.lastFilter = filter
 
@@ -71,7 +71,6 @@ internal class SearchViewModel @Inject constructor(
                 result.fold(::handleFailure, ::handleSearchResult)
             }
         )
-
     }
 
     private fun handleFailure(failure: Failure) {

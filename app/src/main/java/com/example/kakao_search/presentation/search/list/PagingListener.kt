@@ -11,7 +11,8 @@ internal abstract class PagingListener(
     protected abstract fun loadMoreItems()
 
     private var previousTotal = 0
-    private var loading = true
+    private var isLoading = true
+
     private val visibleThreshold = 10
     private var firstVisibleItem = 0
     private var visibleItemCount = 0
@@ -24,17 +25,17 @@ internal abstract class PagingListener(
         totalItemCount = layoutManager.itemCount
         firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
 
-        if (loading) {
+        if (isLoading) {
             if (totalItemCount > previousTotal) {
-                loading = false
+                isLoading = false
                 previousTotal = totalItemCount
             }
         }
 
-        if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+        if (!isLoading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
             loadMoreItems()
 
-            loading = true
+            isLoading = true
         }
     }
 
