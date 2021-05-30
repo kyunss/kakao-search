@@ -21,6 +21,8 @@ internal class SearchViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var page = 1
+    private var lastQuery = ""
+    private var lastFilter: Filter = Filter.All
 
     val searchResult: LiveData<List<SearchItem>>
         get() = _searchResult
@@ -30,12 +32,33 @@ internal class SearchViewModel @Inject constructor(
         get() = _noSearchResult
     private val _noSearchResult = MutableLiveData(false)
 
-    fun loadSearchResult(query: String, filter: Filter = Filter.All) {
+    fun loadSearchResult(query: String, filter: Filter = Filter.Type.Blog) {
+        this.lastQuery = query
+        this.lastFilter = filter
+
         getSearch(
             params = GetSearch.Params(
                 query = query,
-                page = page++,
+                page = page,
                 filter = filter
+            ),
+            scope = viewModelScope,
+            onResult = { result: Either<Failure, Search> ->
+                result.fold(::handleFailure, ::handleSearchResult)
+            }
+        )
+    }
+
+    fun onSearchItemClicked(searchItem: SearchItem) {
+
+    }
+
+    fun onBottomReached(position: Int) {
+        getSearch(
+            params = GetSearch.Params(
+                query = this.lastQuery,
+                page = ++page,
+                filter = this.lastFilter
             ),
             scope = viewModelScope,
             onResult = { result: Either<Failure, Search> ->

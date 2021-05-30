@@ -2,6 +2,7 @@ package com.example.kakao_search.presentation.search
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kakao_search.databinding.FragmentSearchBinding
 import com.example.kakao_search.presentation.search.list.SearchAdapter
+import com.example.kakao_search.presentation.search.list.SearchItem
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -44,9 +46,17 @@ internal class SearchFragment : Fragment() {
         binding.rvSearchResult.adapter = searchAdapter
         binding.rvSearchResult.layoutManager = LinearLayoutManager(context)
 
-        searchAdapter.clickListener = { searchItem ->
+        searchAdapter.setListener(object : SearchAdapter.Listener {
+            override fun onItemClicked(searchItem: SearchItem) {
+                viewModel.onSearchItemClicked(searchItem)
+            }
 
-        }
+            override fun onBottomReached(position: Int) {
+                Log.d("TAG", "onBottomReached - $position")
+
+                viewModel.onBottomReached(position)
+            }
+        })
     }
 
     private fun initializeListener() {
