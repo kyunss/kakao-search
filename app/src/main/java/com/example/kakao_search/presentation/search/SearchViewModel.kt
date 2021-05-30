@@ -7,8 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kakao_search.R
 import com.example.kakao_search.domain.search.*
-import com.example.kakao_search.domain.search.GetBlog
-import com.example.kakao_search.domain.search.GetCafe
 import com.example.kakao_search.exception.Failure
 import com.example.kakao_search.functional.Either
 import com.example.kakao_search.presentation.search.list.SearchItem
@@ -19,9 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class SearchViewModel @Inject constructor(
-    private val getBlog: GetBlog,
-    private val getCafe: GetCafe,
-    private val getAll: GetAll
+    private val getSearch: GetSearch
 ) : ViewModel() {
 
     private var page = 0
@@ -36,46 +32,19 @@ internal class SearchViewModel @Inject constructor(
     private val _noSearchResult = MutableLiveData(false)
 
     fun loadSearchResult(query: String, sort: Sort = Sort.Title, filter: Filter = Filter.All) {
-        when (filter) {
-            is Filter.All -> getAll(
-                params = GetAll.Params(
-                    query = query,
-                    sort = sort.toString(),
-                    page = page++,
-                    size = size
-                ),
-                scope = viewModelScope,
-                onResult = { result: Either<Failure, Search> ->
-                    result.fold(::handleFailure, ::handleSearchResult)
-                }
-            )
-
-            is Filter.Type.Blog -> getBlog(
-                params = GetBlog.Params(
-                    query = query,
-                    sort = sort.toString(),
-                    page = page++,
-                    size = size
-                ),
-                scope = viewModelScope,
-                onResult = { result: Either<Failure, Search> ->
-                    result.fold(::handleFailure, ::handleSearchResult)
-                }
-            )
-
-            is Filter.Type.Cafe -> getCafe(
-                params = GetCafe.Params(
-                    query = query,
-                    sort = sort.toString(),
-                    page = page++,
-                    size = size
-                ),
-                scope = viewModelScope,
-                onResult = { result: Either<Failure, Search> ->
-                    result.fold(::handleFailure, ::handleSearchResult)
-                }
-            )
-        }
+        getSearch(
+            params = GetSearch.Params(
+                query = query,
+                sort = sort.toString(),
+                page = page++,
+                size = size,
+                filter = filter
+            ),
+            scope = viewModelScope,
+            onResult = { result: Either<Failure, Search> ->
+                result.fold(::handleFailure, ::handleSearchResult)
+            }
+        )
     }
 
     private fun handleFailure(failure: Failure) {
