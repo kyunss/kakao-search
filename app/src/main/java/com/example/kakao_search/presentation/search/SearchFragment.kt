@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kakao_search.databinding.FragmentSearchBinding
+import com.example.kakao_search.presentation.core.BaseFragment
 import com.example.kakao_search.presentation.search.list.PagingListener
 import com.example.kakao_search.presentation.search.list.SearchAdapter
 import com.example.kakao_search.support.extension.hideKeyboard
@@ -17,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-internal class SearchFragment : Fragment() {
+internal class SearchFragment : BaseFragment() {
 
     private val viewModel by viewModels<SearchViewModel>()
 
@@ -33,20 +34,12 @@ internal class SearchFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initializeView()
-        initializeListener()
-        observeViewModel()
-    }
-
-    private fun initializeView() {
+    override fun initializeViews() {
         binding.rvSearchResult.adapter = searchAdapter
         binding.rvSearchResult.layoutManager = LinearLayoutManager(context)
     }
 
-    private fun initializeListener() {
+    override fun initializeListeners() {
         binding.bSearch.setOnClickListener {
             requireContext().hideKeyboard(binding.etQuery)
 
@@ -66,7 +59,7 @@ internal class SearchFragment : Fragment() {
         }
     }
 
-    private fun observeViewModel() {
+    override fun observeViewModel() {
         with(viewModel) {
             searchResult.observe(viewLifecycleOwner, { searchItemList ->
                 searchAdapter.addSearchResult(searchItemList)

@@ -1,15 +1,14 @@
 package com.example.kakao_search.presentation.search
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kakao_search.R
 import com.example.kakao_search.domain.search.*
 import com.example.kakao_search.domain.useCase.UseCase
 import com.example.kakao_search.exception.Failure
 import com.example.kakao_search.functional.Either
+import com.example.kakao_search.presentation.core.BaseViewModel
 import com.example.kakao_search.presentation.search.list.SearchItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.format.DateTimeFormatter
@@ -20,7 +19,7 @@ import javax.inject.Inject
 internal class SearchViewModel @Inject constructor(
     private val getSearch: GetSearch,
     private val saveSearch: SaveSearch
-) : ViewModel() {
+) : BaseViewModel() {
 
     private var page = 1
     private var lastQuery = ""
@@ -102,14 +101,10 @@ internal class SearchViewModel @Inject constructor(
         _noSearchResult.value = sortedSearchResult.documents.isEmpty()
     }
 
-    private fun handleFailure(failure: Failure) {
-        Log.e("SearchViewModel", "$failure")
-    }
-
     private fun handleSaveSearch(none: UseCase.None) {}
 
     private fun sortSearchResult(sort: Sort, searchResult: Search): Search {
-        val sortedDocument = when (sort){
+        val sortedDocument = when (sort) {
             Sort.Title -> searchResult.documents.sortedBy { it.title }
             Sort.DateTime -> searchResult.documents.sortedBy { it.dateTime }
         }
