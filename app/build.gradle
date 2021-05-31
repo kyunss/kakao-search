@@ -19,16 +19,40 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        dataBinding true
+    }
+
     buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            applicationIdSuffix = ".debug"
+            debuggable true
+
+            buildConfigField 'String', "KAKAO_BASE_URL", project.properties["KAKAO_BASE_URL"] ?: "\"NOT_FOUND\""
+            buildConfigField 'String', "KAKAO_DEBUG_API_KEY", project.properties["KAKAO_DEBUG_API_KEY"] ?: "\"NOT_FOUND\""
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            applicationIdSuffix = ".release"
+
+            buildConfigField 'String', "KAKAO_BASE_URL", project.properties["KAKAO_BASE_URL"] ?: "\"NOT_FOUND\""
+            buildConfigField 'String', "KAKAO_DEBUG_API_KEY", project.properties["KAKAO_DEBUG_API_KEY"] ?: "\"NOT_FOUND\""
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+
+        coreLibraryDesugaringEnabled true
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -78,7 +102,7 @@ dependencies {
     // ------ Debug ------ //
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
-
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
