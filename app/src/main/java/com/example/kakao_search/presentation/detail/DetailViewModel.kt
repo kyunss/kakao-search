@@ -10,6 +10,7 @@ import com.example.kakao_search.domain.detail.SearchDetail
 import com.example.kakao_search.domain.search.Filter
 import com.example.kakao_search.exception.Failure
 import com.example.kakao_search.functional.Either
+import com.example.kakao_search.support.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -21,7 +22,7 @@ internal class DetailViewModel @Inject constructor(
 
     val searchDetailView: LiveData<SearchDetailView>
         get() = _searchDetailView
-    private val _searchDetailView = MutableLiveData<SearchDetailView>()
+    private val _searchDetailView = SingleLiveEvent<SearchDetailView>()
 
     fun loadSearchDetail(index: Int) {
         getSearchDetail(

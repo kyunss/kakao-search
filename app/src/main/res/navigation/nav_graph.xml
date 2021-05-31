@@ -13,6 +13,7 @@
 
         <action
             android:id="@+id/action_searchFragment_to_detailFragment"
+            app:popUpTo="@id/searchFragment"
             app:destination="@id/detailFragment" />
     </fragment>
 
@@ -30,6 +31,10 @@
         <action
             android:id="@+id/action_detailFragment_to_webFragment"
             app:destination="@id/webFragment" />
+
+        <action
+            android:id="@+id/action_detailFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
 
     <fragment
@@ -37,6 +42,9 @@
         android:label="WebFragment"
         android:name="com.example.kakao_search.presentation.web.WebFragment"
         tools:layout="@layout/fragment_web">
+        <action
+            android:id="@+id/action_webFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </fragment>
 
 </navigation>
