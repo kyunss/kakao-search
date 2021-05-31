@@ -26,7 +26,6 @@ internal class GetSearch @Inject constructor(
                 )
 
                 return if (blogResponse.isRight && cafeResponse.isRight) {
-                    //FixMe
                     val blogSearch = blogResponse.getOrElse(Failure.ServerError) as Search
                     val cafeSearch = cafeResponse.getOrElse(Failure.ServerError) as Search
 

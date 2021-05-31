@@ -8,7 +8,7 @@ data class Search(
     val totalCount: Int,
     val pageCount: Int,
     val isEnd: Boolean,
-    val documents: List<Document>,
+    var documents: List<Document>,
 ) {
     companion object {
         fun empty(): Search {

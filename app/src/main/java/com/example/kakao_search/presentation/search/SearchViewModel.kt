@@ -74,9 +74,11 @@ internal class SearchViewModel @Inject constructor(
     }
 
     private fun handleSearchResult(searchResult: Search) {
+        val sortedSearchResult = sortSearchResult(sort = Sort.Title, searchResult = searchResult)
+
         saveSearch(
             params = SaveSearch.Params(
-                search = searchResult
+                search = sortedSearchResult
             ),
             scope = viewModelScope,
             onResult = { result: Either<Failure, UseCase.None> ->
@@ -84,7 +86,7 @@ internal class SearchViewModel @Inject constructor(
             }
         )
 
-        _searchResult.value = searchResult.documents.map { document ->
+        _searchResult.value = sortedSearchResult.documents.map { document ->
             SearchItem(
                 typeImage = when (document.type) {
                     is Filter.Type.Blog -> R.drawable.ic_round_format_bold_24
@@ -97,7 +99,7 @@ internal class SearchViewModel @Inject constructor(
             )
         }
 
-        _noSearchResult.value = searchResult.documents.isEmpty()
+        _noSearchResult.value = sortedSearchResult.documents.isEmpty()
     }
 
     private fun handleFailure(failure: Failure) {
@@ -105,5 +107,16 @@ internal class SearchViewModel @Inject constructor(
     }
 
     private fun handleSaveSearch(none: UseCase.None) {}
+
+    private fun sortSearchResult(sort: Sort, searchResult: Search): Search {
+        val sortedDocument = when (sort){
+            Sort.Title -> searchResult.documents.sortedBy { it.title }
+            Sort.DateTime -> searchResult.documents.sortedBy { it.dateTime }
+        }
+
+        searchResult.documents = sortedDocument
+
+        return searchResult
+    }
 
 }
