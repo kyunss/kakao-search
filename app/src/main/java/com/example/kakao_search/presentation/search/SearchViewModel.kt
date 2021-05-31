@@ -1,14 +1,14 @@
 package com.example.kakao_search.presentation.search
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kakao_search.R
 import com.example.kakao_search.domain.search.*
+import com.example.kakao_search.domain.useCase.UseCase
 import com.example.kakao_search.exception.Failure
 import com.example.kakao_search.functional.Either
+import com.example.kakao_search.presentation.core.BaseViewModel
 import com.example.kakao_search.presentation.search.list.SearchItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.format.DateTimeFormatter
@@ -17,8 +17,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class SearchViewModel @Inject constructor(
-    private val getSearch: GetSearch
-) : ViewModel() {
+    private val getSearch: GetSearch,
+    private val saveSearch: SaveSearch
+) : BaseViewModel() {
 
     private var page = 1
     private var lastQuery = ""
@@ -36,12 +37,28 @@ internal class SearchViewModel @Inject constructor(
         get() = _noSearchResult
     private val _noSearchResult = MutableLiveData(false)
 
+    val navigateToDetail: LiveData<Int>
+        get() = _navigateToDetail
+    private val _navigateToDetail = MutableLiveData<Int>()
+
     fun loadSearchResult(query: String, filter: Filter = Filter.All) {
         this.lastQuery = query
         this.lastFilter = filter
 
         _clearSearchResult.value = true
 
+        executeGetSearch(query, this.page, filter)
+    }
+
+    fun onSearchItemClicked(searchItem: SearchItem, position: Int) {
+        _navigateToDetail.value = position
+    }
+
+    fun loadMoreItems() {
+        executeGetSearch(this.lastQuery, ++page, this.lastFilter)
+    }
+
+    private fun executeGetSearch(query: String, page: Int, filter: Filter) {
         getSearch(
             params = GetSearch.Params(
                 query = query,
@@ -55,32 +72,20 @@ internal class SearchViewModel @Inject constructor(
         )
     }
 
-    fun onSearchItemClicked(searchItem: SearchItem) {
+    private fun handleSearchResult(searchResult: Search) {
+        val sortedSearchResult = sortSearchResult(sort = Sort.Title, searchResult = searchResult)
 
-    }
-
-    fun loadMoreItems() {
-        getSearch(
-            params = GetSearch.Params(
-                query = this.lastQuery,
-                page = ++page,
-                filter = this.lastFilter
+        saveSearch(
+            params = SaveSearch.Params(
+                search = sortedSearchResult
             ),
             scope = viewModelScope,
-            onResult = { result: Either<Failure, Search> ->
-                result.fold(::handleFailure, ::handleSearchResult)
+            onResult = { result: Either<Failure, UseCase.None> ->
+                result.fold(::handleFailure, ::handleSaveSearch)
             }
         )
-    }
 
-    private fun handleFailure(failure: Failure) {
-        Log.e("SearchViewModel", "$failure")
-    }
-
-    private fun handleSearchResult(searchResult: Search) {
-        Log.e("SearchViewModel", "searchResultSize: ${searchResult.documents.size}, pageNumber : ${this.page}")
-
-        _searchResult.value = searchResult.documents.map { document ->
+        _searchResult.value = sortedSearchResult.documents.map { document ->
             SearchItem(
                 typeImage = when (document.type) {
                     is Filter.Type.Blog -> R.drawable.ic_round_format_bold_24
@@ -93,7 +98,20 @@ internal class SearchViewModel @Inject constructor(
             )
         }
 
-        _noSearchResult.value = searchResult.documents.isEmpty()
+        _noSearchResult.value = sortedSearchResult.documents.isEmpty()
+    }
+
+    private fun handleSaveSearch(none: UseCase.None) {}
+
+    private fun sortSearchResult(sort: Sort, searchResult: Search): Search {
+        val sortedDocument = when (sort) {
+            Sort.Title -> searchResult.documents.sortedBy { it.title }
+            Sort.DateTime -> searchResult.documents.sortedBy { it.dateTime }
+        }
+
+        searchResult.documents = sortedDocument
+
+        return searchResult
     }
 
 }

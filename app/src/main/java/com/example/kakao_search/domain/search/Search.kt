@@ -8,13 +8,24 @@ data class Search(
     val totalCount: Int,
     val pageCount: Int,
     val isEnd: Boolean,
-    val documents: List<Document>,
+    var documents: List<Document>,
 ) {
+    companion object {
+        fun empty(): Search {
+            return Search(
+                totalCount = 0,
+                pageCount = 0,
+                isEnd = false,
+                documents = listOf()
+            )
+        }
+    }
+
     operator fun plus(other: Search): Search {
         return Search(
             totalCount = this.totalCount + other.totalCount,
             pageCount = this.pageCount + other.pageCount,
-            isEnd = false, // FixMe
+            isEnd = this.isEnd || other.isEnd,
             documents = this.documents + other.documents
         )
     }
@@ -22,12 +33,12 @@ data class Search(
 
 data class Document(
     val type: Filter.Type,
+    val thumbnail: Uri,
+    val name: String,
     val title: String,
     val contents: String,
-    val url: String,
-    val name: String,
-    val thumbnail: Uri,
     val dateTime: LocalDateTime,
+    val url: String,
 )
 
 sealed class Filter {

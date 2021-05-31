@@ -5,6 +5,7 @@ import android.os.Build
 import android.text.Html
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.text.parseAsHtml
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.example.kakao_search.R
@@ -13,7 +14,7 @@ import java.time.format.DateTimeFormatter
 
 
 @BindingAdapter("image")
-fun bindCircleImage(imageView: ImageView, image: Uri) {
+fun bindImage(imageView: ImageView, image: Uri?) {
     Glide.with(imageView)
         .load(image)
         .error(R.drawable.ic_baseline_disabled_by_default_24)
@@ -21,12 +22,8 @@ fun bindCircleImage(imageView: ImageView, image: Uri) {
 }
 
 @BindingAdapter("htmlText")
-fun bindHtmlText(textView: AppCompatTextView, htmlText: String) {
-    textView.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY)
-    } else {
-        Html.fromHtml(htmlText)
-    }
+fun bindHtmlText(textView: AppCompatTextView, htmlText: String?) {
+    textView.text = htmlText?.parseAsHtml()
 }
 
 @BindingAdapter("dateFormat")

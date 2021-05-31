@@ -9,7 +9,7 @@ internal class SearchAdapter : RecyclerView.Adapter<SearchViewHolder>() {
 
     private var searchResultList = mutableListOf<SearchItem>()
 
-    internal var clickListener: (SearchItem) -> Unit = { _ -> }
+    internal var clickListener: (SearchItem, Int) -> Unit = { _, _ -> }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         return SearchViewHolder.from(parent)
